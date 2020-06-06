@@ -1,17 +1,34 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import SearchOverlay from "./SearchOverlay";
 import { FaSearch } from "react-icons/fa";
 
 export default function App() {
-  const navLinks = ["Home", "Locations", "Events", "Support"];
+  const [navLinks, setNavLinks] = useState([
+    "Home",
+    "Locations",
+    "Events",
+    "Support",
+  ]);
+  const commonURLs = [
+    ["Finance (Silver)", "https://silver.yext-cdn.com/?"],
+    ["Healthcare (Synergic)", "https://synergic.yext-cdn.com?"],
+    ["Food (Subz)", "https://subz.yext-cdn.com?"],
+    ["Retail (Sneaks)", "https://sneaks.yext-cdn.com?"],
+  ];
+  const [iframeURL, setIframeURL] = useState("https://silver.yext-cdn.com/?");
+
+  const [showingConfig, setShowingConfig] = useState(false);
   const searchOverlayRef = useRef(null);
   return (
     <div>
-      <div className="flex justify-between items-center bg-blue-900 text-white mb-4">
+      <div className="flex justify-between items-center bg-blue-900 text-white mb-4 sticky top-0">
         <div className="flex">
-          {navLinks.map(l => {
+          {navLinks.map((l) => {
             return (
-              <div className="ml-4 px-4 py-3 hover:bg-blue-800 cursor-pointer">
+              <div
+                className="ml-4 px-4 py-3 hover:bg-blue-800 cursor-pointer"
+                key={l}
+              >
                 {l}
               </div>
             );
@@ -20,7 +37,10 @@ export default function App() {
         <div
           className="flex px-4 py-1 items-center bg-gray-300 text-blue-800 rounded mx-2 w-40 hover:bg-white cursor-pointer"
           onClick={() => {
-            searchOverlayRef.current.showSearchOverlay();
+            if (searchOverlayRef.current) {
+              //@ts-ignore
+              searchOverlayRef.current.showSearchOverlay();
+            }
           }}
         >
           <FaSearch />
@@ -28,54 +48,78 @@ export default function App() {
         </div>
       </div>
       <div className="p-4 mx-auto max-w-3xl">
-        <h1 className="text-2xl pb-2">Answers Slideover Demo</h1>
-
-        <p>
-          This is a demo of a new type of Anwers Integration called the
-          Slideover. On this demo page we are showing 4 different ways of
-          invoking the Answers Slideover.
-        </p>
-        <p>
-          On the left we have two tabs that do the same thing. One is phrased as
-          Ask a Question and the second one is phrased as Live Chat. You would
-          usually not have both methods on the same screen but this shows how
-          text can vary the user experience.
-        </p>
-        <p>
-          On the bottom right you can see a floating bubble with a search icon.
-          This is extremly common with live chat and is another option. You
-          could display this an a left tab at the same time to try and increase
-          searches.
-        </p>
-        <p>
-          The final mode is by clicking the search bar itself. We would not
-          encourage our standard implementations to do this but if you do
-          implement via slideover this could be a good way to drive people to
-          search without having to implement a full search results page.
-        </p>
-        <p>
-          <a
-            className="text-blue-900 underline"
-            href="https://docs.google.com/document/d/1DeVkjRO3uOVXFz1nszikB_FzVtZzBI6wIU20TfxyxZE/edit#heading=h.b8lcieajbv4n"
+        <h1 className="text-2xl pb-2">Sample Website</h1>
+        {!showingConfig && (
+          <div
+            className="text-sm text-gray-500 cursor-pointer"
+            onClick={() => setShowingConfig(true)}
           >
-            Learn more about the strategy here
-          </a>
+            Configure Demo
+          </div>
+        )}
+        {showingConfig && (
+          <div className="bg-gray-100 py-2 px-2">
+            <div
+              className="text-sm text-gray-500 cursor-pointer mb-6"
+              onClick={() => setShowingConfig(false)}
+            >
+              Hide Configuration
+            </div>
+            <label className="my-2">
+              iFrame URL
+              <input
+                className="border w-full rounded-md py-2 px-4"
+                onChange={(e) => setIframeURL(e.target.value)}
+                value={iframeURL}
+              />
+            </label>
+            <div>Common Demos</div>
+            {commonURLs.map((c) => {
+              return (
+                <li
+                  key={c[1]}
+                  onClick={() => setIframeURL(c[1])}
+                  className="px-2 hover:bg-gray-200 rounded-md py-1 cursor-pointer"
+                >
+                  {c[0]}
+                </li>
+              );
+            })}
+          </div>
+        )}
+        <img
+          src="https://images.unsplash.com/photo-1591388783682-1609c4bcd8cb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3300&q=80"
+          alt=""
+        />
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
         </p>
-
-        <h2 className="text-xl mb-2 mt-4">Negatives of Slideover</h2>
-        <p>There are some key drawbacks of this approach:</p>
-        <ol className="list-disc ml-6">
-          <li>
-            We no longer perserve state via URL. You can't share a url with
-            others and search engines can't point at a specific page
-          </li>
-          <li>
-            Our UX indicate that less people click floating bubbles then run
-            search.
-          </li>
-        </ol>
-
-        <SearchOverlay ref={searchOverlayRef} />
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+        //@ts-ignore
+        <SearchOverlay ref={searchOverlayRef} iframeURL={iframeURL} />
       </div>
     </div>
   );

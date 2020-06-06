@@ -4,7 +4,7 @@ import {
   FaTimes,
   FaCompress,
   FaExpand,
-  FaComment
+  FaComment,
 } from "react-icons/fa";
 import { useSpring, animated } from "react-spring";
 import { useWindowWidth } from "@react-hook/window-size";
@@ -16,7 +16,7 @@ const SearchOverlay = forwardRef((props, ref) => {
   const narrowWidth = 450;
   const popoverStyle = useSpring({
     right: showingSearch ? `${0}px` : `${-narrowWidth}px`,
-    width: fullScreen ? `${windowWidth}px` : `${narrowWidth}px`
+    width: fullScreen ? `${windowWidth}px` : `${narrowWidth}px`,
   });
 
   const showSearchOverlay = () => {
@@ -25,7 +25,7 @@ const SearchOverlay = forwardRef((props, ref) => {
 
   useImperativeHandle(ref, () => {
     return {
-      showSearchOverlay: showSearchOverlay
+      showSearchOverlay: showSearchOverlay,
     };
   });
 
@@ -36,16 +36,16 @@ const SearchOverlay = forwardRef((props, ref) => {
 
   const buttonStyle = useSpring({
     opacity: !showingSearch ? 1 : 0,
-    bottom: !showingSearch ? "0px" : "-100px"
+    bottom: !showingSearch ? "0px" : "-100px",
   });
 
   const badgeStyle = useSpring({
     top: "30%",
-    left: showingSearch ? "-50px" : "0px"
+    left: showingSearch ? "-50px" : "0px",
   });
 
   const overlayStyle = useSpring({
-    backgroundColor: showingSearch ? "#00000040" : "#00000000"
+    backgroundColor: showingSearch ? "#00000040" : "#00000000",
   });
 
   return (
@@ -61,7 +61,7 @@ const SearchOverlay = forwardRef((props, ref) => {
         className="fixed bottom-0 top-0 border shadow-xl bg-white flex flex-col"
         style={popoverStyle}
       >
-        <div className="py-1 flex justify-between bg-gray-100 border-b items-center flex-0">
+        <div className="py-1 flex justify-between bg-gray-100 border-b items-center flex-0 z-50">
           <div className="text-xs  tracking-wider mx-2 text-gray-500">
             Yext Answers
           </div>
@@ -83,15 +83,18 @@ const SearchOverlay = forwardRef((props, ref) => {
             </button>
           </div>
         </div>
-        <div className="flex-grow">
+        <div className="flex-grow -mt-1">
+          <h1 className="px-4 py-2 pt-4 text-gray-700 text-lg bg-gray-50 border-b">
+            What are you looking for?
+          </h1>
           <iframe
             title="Search"
-            src="https://silver.yext-cdn.com/?"
+            src={(props as any).iframeURL}
             height="100%"
             width="100%"
           />
         </div>
-        <div className="flex-0 flex justify-center items-center text-gray-600 py-4 bg-gray-100 cursor-pointer hover:bg-gray-200 border-t">
+        <div className="flex-0 flex justify-center items-center text-gray-600 py-4 bg-gray-100 cursor-pointer hover:bg-gray-200 border-t z-50">
           <FaComment /> <div className="ml-2">Chat with an Agent</div>
         </div>
       </animated.div>
@@ -114,7 +117,7 @@ const SearchOverlay = forwardRef((props, ref) => {
           className="bg-blue-900 text-gray-100 px-1 py-4 shadow hover:shadow-lg hover:bg-blue-800 rounded-r line-snug"
           style={{
             writingMode: "vertical-rl",
-            textOrientation: "mixed"
+            textOrientation: "mixed",
           }}
         >
           Ask a Question
@@ -123,7 +126,7 @@ const SearchOverlay = forwardRef((props, ref) => {
           className="bg-blue-900 text-gray-100 px-1 py-4 shadow hover:shadow-lg mt-2 hover:bg-blue-800  rounded-r  line-snug"
           style={{
             writingMode: "vertical-rl",
-            textOrientation: "mixed"
+            textOrientation: "mixed",
           }}
         >
           Live Chat
